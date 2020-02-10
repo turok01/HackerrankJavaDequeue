@@ -1,23 +1,31 @@
 package com.Igor;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Scanner;
-
+import java.util.*;
 public class test {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        Deque deque = new ArrayDeque<>();
+        Deque<Integer> deque = new ArrayDeque<>();
+        Map<Integer,Integer> uniqInt = new HashMap<>();
+
         int n = in.nextInt();
         int m = in.nextInt();
-
+        int max=0;
         for (int i = 0; i < n; i++) {
             int num = in.nextInt();
-            if(!deque.contains(num))
-                deque.add(num);
+            if (uniqInt.containsKey(num)){
+                do{
+                    int deleteInt = deque.peekFirst();
+                    uniqInt.remove(deleteInt);
+                }
+                while(deque.pollFirst()!=num);
+            }
+            deque.add(num);
+            max = Math.max(max, deque.size());
+            uniqInt.put(num,1);
+            if (max == m)
+                break;
         }
-        System.out.println(Math.min(deque.size(), m));
-        //System.out.println((deque.size()<m) ? deque.size() : m);
+        System.out.println(max);
         in.close();
     }
 }
